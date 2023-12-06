@@ -6896,25 +6896,7 @@ public class MessageObject {
 
     public Boolean isOutOwnerCached;
     public boolean isOutOwner() {
-        if (previewForward) {
-            return true;
-        }
-        if (isOutOwnerCached != null) {
-            return isOutOwnerCached;
-        }
-        TLRPC.Chat chat = messageOwner.peer_id != null && messageOwner.peer_id.channel_id != 0 ? getChat(null, null, messageOwner.peer_id.channel_id) : null;
-        if (!messageOwner.out || !(messageOwner.from_id instanceof TLRPC.TL_peerUser) && (!(messageOwner.from_id instanceof TLRPC.TL_peerChannel) || ChatObject.isChannel(chat) && !chat.megagroup) || messageOwner.post) {
-            return isOutOwnerCached = false;
-        }
-        if (messageOwner.fwd_from == null) {
-            return isOutOwnerCached = true;
-        }
-        long selfUserId = UserConfig.getInstance(currentAccount).getClientUserId();
-        if (getDialogId() == selfUserId) {
-            return isOutOwnerCached = messageOwner.fwd_from.from_id instanceof TLRPC.TL_peerUser && messageOwner.fwd_from.from_id.user_id == selfUserId && (messageOwner.fwd_from.saved_from_peer == null || messageOwner.fwd_from.saved_from_peer.user_id == selfUserId)
-                    || messageOwner.fwd_from.saved_from_peer != null && messageOwner.fwd_from.saved_from_peer.user_id == selfUserId && (messageOwner.fwd_from.from_id == null || messageOwner.fwd_from.from_id.user_id == selfUserId);
-        }
-        return isOutOwnerCached = messageOwner.fwd_from.saved_from_peer == null || messageOwner.fwd_from.saved_from_peer.user_id == selfUserId;
+        return false;
     }
 
     public boolean needDrawAvatar() {
@@ -7242,11 +7224,6 @@ public class MessageObject {
     }
 
     public boolean isSecretMedia() {
-        if (messageOwner instanceof TLRPC.TL_message_secret) {
-            return (((getMedia(messageOwner) instanceof TLRPC.TL_messageMediaPhoto) || isGif()) && messageOwner.ttl > 0 && messageOwner.ttl <= 60 || isVoice() || isRoundVideo() || isVideo());
-        } else if (messageOwner instanceof TLRPC.TL_message) {
-            return (getMedia(messageOwner) != null && getMedia(messageOwner).ttl_seconds != 0) && (getMedia(messageOwner) instanceof TLRPC.TL_messageMediaPhoto || getMedia(messageOwner) instanceof TLRPC.TL_messageMediaDocument);
-        }
         return false;
     }
 
@@ -8415,7 +8392,7 @@ public class MessageObject {
     }
 
     public boolean canForwardMessage() {
-        return !(messageOwner instanceof TLRPC.TL_message_secret) && !needDrawBluredPreview() && !isLiveLocation() && type != MessageObject.TYPE_PHONE_CALL && !isSponsored() && !messageOwner.noforwards;
+        return true;
     }
 
     public boolean canEditMedia() {

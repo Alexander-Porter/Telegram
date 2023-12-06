@@ -1001,42 +1001,7 @@ public class FileLoader extends BaseController {
     }
 
     private boolean canSaveToPublicStorage(Object parentObject) {
-        if (BuildVars.NO_SCOPED_STORAGE) {
-            return false;
-        }
-        FilePathDatabase.FileMeta metadata = getFileMetadataFromParent(currentAccount, parentObject);
-        MessageObject messageObject = null;
-        if (metadata != null) {
-            int flag;
-            long dialogId = metadata.dialogId;
-            if (getMessagesController().isChatNoForwards(getMessagesController().getChat(-dialogId)) || DialogObject.isEncryptedDialog(dialogId)) {
-                return false;
-            }
-            if (parentObject instanceof MessageObject) {
-                messageObject = (MessageObject) parentObject;
-                if (messageObject.isRoundVideo() || messageObject.isVoice() || messageObject.isAnyKindOfSticker() || messageObject.messageOwner.noforwards) {
-                    return false;
-                }
-            } else {
-                if (metadata.messageType == MessageObject.TYPE_ROUND_VIDEO || metadata.messageType == MessageObject.TYPE_STICKER || metadata.messageType == MessageObject.TYPE_VOICE) {
-                    return false;
-                }
-            }
-            if (dialogId >= 0) {
-                flag = SharedConfig.SAVE_TO_GALLERY_FLAG_PEER;
-            } else {
-                if (ChatObject.isChannelAndNotMegaGroup(getMessagesController().getChat(-dialogId))) {
-                    flag = SharedConfig.SAVE_TO_GALLERY_FLAG_CHANNELS;
-                } else {
-                    flag = SharedConfig.SAVE_TO_GALLERY_FLAG_GROUP;
-                }
-            }
-
-            if (SaveToGallerySettingsHelper.needSave(flag, metadata, messageObject, currentAccount)) {
-                return true;
-            }
-        }
-        return false;
+        return true;
     }
 
     private void addOperationToQueue(FileLoadOperation operation, LinkedList<FileLoadOperation> queue) {
