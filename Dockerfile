@@ -37,4 +37,4 @@ CMD mkdir -p /home/source/TMessagesProj/build/outputs/apk && \
     gradle :TMessagesProj_AppStandalone:assembleAfatStandalone && \
     gradle :TMessagesProj_App:assembleAfatRelease && \
     cp -R /home/gradle/TMessagesProj_App/build/outputs/apk/. /home/source && \
-    cp -R /home/gradle/TMessagesProj_AppStandalone/build/outputs/apk/. /home/source && \
+    cp -R /home/gradle/TMessagesProj_AppStandalone/build/outputs/apk/. /home/source
